@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block title %}Новое обращение · SecureWhistle{% endblock %}
+{% block c %}<div class="head"><h1>Новое обращение</h1></div>
+<form method="post" enctype="multipart/form-data" class="card">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Тема<input type="text" name="title" minlength="3" maxlength="120" required></label>
+<label>Что произошло<textarea name="body" rows="9" minlength="10" maxlength="5000" required></textarea><span class="hint">Не указывайте имя и контакты, если хотите остаться анонимным.</span></label>
+<label>Вложения<input type="file" name="files" multiple accept=".png,.jpg,.jpeg,.pdf"><span class="hint">До 3 файлов: PNG, JPG или PDF. Фото может содержать метаданные: место и устройство съёмки.</span></label>
+<button class="btn">Отправить обращение</button></form>{% endblock %}

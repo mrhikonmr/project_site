@@ -1,0 +1,2 @@
+{% extends 'base.html' %}{% block title %}Ошибка {{ code }} · SecureWhistle{% endblock %}
+{% block c %}<div class="err"><div class="n">{{ code }}</div><h2>{{ msg }}</h2><p><a class="btn" href="{{ url_for('index') }}">На главную</a></p></div>{% endblock %}

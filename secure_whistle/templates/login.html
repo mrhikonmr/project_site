@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block title %}Вход · SecureWhistle{% endblock %}{% block header %}{% endblock %}
+{% block c %}<section class="auth">{% include '_auth_side.html' %}<div class="auth-form"><h2>Вход</h2><form method="post">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Логин<input type="text" name="username" maxlength="32" required autocomplete="username"></label>
+<label>Пароль<input type="password" name="password" required autocomplete="current-password"></label>
+<button class="btn">Войти</button></form><p class="alt">Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a></p></div></section>{% endblock %}

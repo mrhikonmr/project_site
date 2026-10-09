@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block title %}Управление · SecureWhistle{% endblock %}
+{% block c %}<div class="head"><h1>Управление</h1></div>
+<div class="card"><h2>Пользователи</h2><div class="scroll"><table><tr><th>Логин</th><th>Роль</th><th>Статус</th><th></th></tr>
+{% for u in users %}<tr><td>{{ u.username }}</td><td><span class="badge {{ u.role }}">{{ u.role }}</span></td><td>{% if u.active %}активен{% else %}<span class="badge off">отключён</span>{% endif %}</td>
+<td>{% if u.id!=g.user.id %}<form method="post" action="{{ url_for('admin_toggle', uid=u.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="ghost small">{{ 'Отключить' if u.active else 'Включить' }}</button></form>{% endif %}</td></tr>{% endfor %}</table></div></div>
+<form method="post" action="{{ url_for('admin_create') }}" class="card"><h2>Новый manager или admin</h2><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="row"><label>Логин<input type="text" name="username" maxlength="32" required></label><label>Пароль<input type="password" name="password" minlength="10" required></label>
+<label>Роль<select name="role"><option>manager</option><option>admin</option></select></label><button class="btn">Создать</button></div></form>
+<div class="card"><h2>Журнал аудита</h2><div class="scroll"><table><tr><th>Время (UTC)</th><th>Пользователь</th><th>Действие</th><th>Объект</th><th>IP</th></tr>
+{% for l in logs %}<tr><td>{{ l.ts.strftime('%d.%m %H:%M:%S') }}</td><td>{{ l.user }}</td><td>{{ l.action }}</td><td class="code">{{ l.target }}</td><td>{{ l.ip }}</td></tr>{% endfor %}</table></div>
+<p class="foot">Администратор не имеет доступа к содержимому обращений.</p></div>{% endblock %}

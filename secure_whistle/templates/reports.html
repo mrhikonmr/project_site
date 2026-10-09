@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block title %}Обращения · SecureWhistle{% endblock %}
+{% block c %}<div class="head"><h1>Обращения</h1>{% if g.user.role=='user' %}<a class="btn" href="{{ url_for('new_report') }}">Новое обращение</a>{% endif %}</div>
+{% for r,t in items %}<a class="item {{ r.status }}" href="{{ url_for('view_report', code=r.code) }}"><span class="t">{{ t }}</span><span class="d">{{ r.created.strftime('%d.%m.%Y') }}</span><span class="badge {{ r.status }}">{{ statuses[r.status] }}</span></a>
+{% else %}<div class="card empty"><p>{% if g.user.role=='user' %}Вы ещё ничего не отправляли.{% else %}Новых обращений нет.{% endif %}</p>{% if g.user.role=='user' %}<a class="btn" href="{{ url_for('new_report') }}">Создать первое обращение</a>{% endif %}</div>{% endfor %}{% endblock %}

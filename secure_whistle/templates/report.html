@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block title %}{{ title }} · SecureWhistle{% endblock %}
+{% block c %}<p><a href="{{ url_for('reports') }}">← Все обращения</a></p>
+<h1>{{ title }}</h1>
+<div class="meta"><span class="badge {{ r.status }}">{{ statuses[r.status] }}</span><span>Автор скрыт</span><span>{{ r.created.strftime('%d.%m.%Y %H:%M') }} UTC</span><span class="code">{{ r.code }}</span></div>
+<div class="card"><pre>{{ body }}</pre>{% for f in r.files %}<a class="chip" href="{{ url_for('download', fid=f.id) }}">Вложение {{ loop.index }} · .{{ f.ext }}</a>{% endfor %}</div>
+{% if g.user.role=='manager' %}<form method="post" class="card row"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="status">
+<label>Статус<select name="status">{% for k,v in statuses.items() %}<option value="{{ k }}" {{ 'selected' if k==r.status }}>{{ v }}</option>{% endfor %}</select></label><button class="btn">Сохранить статус</button></form>{% endif %}
+<h2>Переписка</h2><div class="thread">{% for m,t in msgs %}<div class="msg {{ 'm' if m.from_manager }}"><small>{{ 'Compliance' if m.from_manager else 'Автор' }} · {{ m.created.strftime('%d.%m %H:%M') }}</small><pre>{{ t }}</pre></div>
+{% else %}<p class="foot">Сообщений пока нет.</p>{% endfor %}</div>
+<form method="post" class="card"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="message">
+<label>{{ 'Вопрос автору' if g.user.role=='manager' else 'Ответ менеджеру' }}<textarea name="message" rows="3" maxlength="2000" required></textarea></label><button class="btn">Отправить сообщение</button></form>{% endblock %}
